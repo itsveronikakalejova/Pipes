@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset = "UTF-8">
+    <title>Winner</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div th:replace="fragments::header"></div>
+    <h1 class="youWon">You Won!</h1>
+
+    <span th:if="${@userController.isLogged()}" class="gameState">
+        <span th:text="${@userController.getLoggedUser().getLogin()}"/>'s score is:
+        <span th:text="${@pipesController.getScore()}" class="gameStateSpan"/>
+    </span>
+
+    <div class="newGame">
+    <a href="/pipes/new"><button class="inputButton">New Game</button></a>
+    </div>
+
+    <div class="newGame">
+        <a href="/pipes/comments"> <button class="inputButton">Show Comments</button></a>
+    </div>
+
+    <div class="newGame">
+        <button id="rateGameBtn" class="inputButton">Rate our game</button>
+        <form id="ratingForm" action="/pipes/winner" method="post" style="display: none;">
+            <label for="rating" id="label">Rate (1-5):</label>
+            <input type="number" id="rating" name="rating" min="1" max="5">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+
+    <div id="averageRating" class="average-rating"></div>
+
+
+
+    <div th:replace="fragments::footer"></div>
+
+    <script>
+        $(document).ready(function(){
+            $("#ratingForm").hide();
+
+            $("#rateGameBtn").click(function(){
+                $("#ratingForm").show();
+            });
+
+            $("#ratingForm").submit(function(event) {
+                event.preventDefault();
+
+                var rating = $("#rating").val();
+
+                $.post("/pipes/rate", { rating: rating })
+                    .done(function() {
+                        alert("Thank you for rating the game!");
+                    })
+                    .fail(function() {
+                        alert("Failed to submit rating. Please try again later.");
+                    });
+            });
+
+            function fetchAverageRating() {
+                $.get("/pipes/averageRating", function(data) {
+                    $("#averageRating").text("Average Rating: " + data);
+                });
+            }
+
+            fetchAverageRating();
+        });
+    </script>
+</body>
+</html>

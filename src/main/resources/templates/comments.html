@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comments</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<div th:replace="fragments::header"></div>
+
+<div class="commentsDiv">
+    <h2>Comments</h2>
+    <ul>
+        <li th:each="comment : ${comments}">
+            <span th:text="${comment.player}"/>:
+            <span th:text="${comment.comment}"/>
+        </li>
+    </ul>
+</div>
+<div class="newGame">
+
+    <button id="leaveCommentBtn" class="inputButton">Leave a Comment</button>
+    <form id="commentForm" action="/pipes/submitComment" method="post">
+        <label for="comment">Your Comment:</label><br>
+        <textarea id="comment" name="commentText" rows="4" cols="50" required></textarea><br>
+        <input type="submit" value="Submit" id="submitCommentBtn">
+    </form>
+
+
+</div>
+
+<div th:replace="fragments::footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var leaveCommentBtn = document.getElementById('leaveCommentBtn');
+        var commentForm = document.getElementById('commentForm');
+
+        commentForm.style.display = 'none';
+
+        leaveCommentBtn.addEventListener('click', function () {
+            commentForm.style.display = 'block';
+        });
+
+        var submitCommentBtn = document.getElementById('submitCommentBtn');
+        submitCommentBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            var formData = new FormData(commentForm);
+
+            fetch('/pipes/submitComment', {
+                method: 'POST',
+                body: formData
+            })
+                .then(function () {
+                    alert('Thank you for your comment!');
+                })
+                .catch(function () {
+                    alert('Failed to submit comment. Please try again later.');
+                });
+        });
+    });
+
+</script>
+</body>
+</html>

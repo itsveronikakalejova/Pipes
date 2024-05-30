@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <title>GameStudio</title>
+</head>
+<body>
+        <div class="listOfGames">
+            <h1 class="favouriteGames">Our favorite games</h1>
+            <ol class="gamesOl">
+                <li class="gameLi"><a href="/pipes/new" class="game">Pipes</a></li>
+                <li class="gameLi"><a href="" class="game">Mines</a></li>
+                <li class="gameLi"><a href="" class="game">NumberLink</a></li>
+                <li class="gameLi"><a href="" class="game">Pexeso</a></li>
+            </ol>
+        </div>
+
+
+        <div class="loginDiv">
+            <form th:if="not ${@userController.isLogged()}" action="/login" class="loginForm">
+                <span class="loginSpan">Login:</span> <input type="text" name="login"> <br>
+                <span class="loginSpan">Password:</span> <input type="password" name="password"> <br>
+                <input type="submit" class="inputButton">
+            </form>
+            <a th:if="${@userController.isLogged()}" href="/logout" class="loginForm">Logout</a><br>
+        </div>
+
+        <div th:replace="fragments::footer"></div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset = "UTF-8">
+    <title>Pipes</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+    <div th:replace="fragments::header"></div>
+
+
+    <span th:if="${@userController.isLogged()}" class="loggedUser">
+    Logged User: <span th:text="${@userController.getLoggedUser().getLogin()}" class="myName"></span>
+    </span>
+
+    <span th:utext="${htmlField}"></span>
+
+    <div class="gameState">
+        State is: <span th:text="${gameState}" class="gameStateSpan"/>
+    </div>
+
+    <div class="scoreDiv">
+        <h2>Score</h2>
+        <ol>
+            <li th:each="score : ${scores}">
+                <span th:text="${score.player}"/>
+                <span th:text="${score.points}"/>
+            </li>
+        </ol>
+    </div>
+
+
+    <div th:replace="fragments::footer"></div>
+</body>
+</html>
