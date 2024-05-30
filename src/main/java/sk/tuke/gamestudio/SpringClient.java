@@ -28,7 +28,6 @@ public class SpringClient {
         new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
 
     }
-
     @Bean
     CommandLineRunner runner() {
         return s -> new Menu(scoreService(), commentService(), ratingService()).printMenu();
